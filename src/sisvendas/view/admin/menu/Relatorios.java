@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Vector;
 import javax.persistence.Query;
 import javax.swing.table.DefaultTableModel;
+import sisvendas.bean.admin.RelatReserva;
 import sisvendas.bean.admin.Venda;
 
 /**
@@ -19,7 +20,7 @@ public class Relatorios extends javax.swing.JFrame {
     /**
      * Creates new form Relatorios  and v.data = :dia
      */
-     private static String RETORNA_PRODUTO = "select v.codProduto.descricao,v.qtde,v.total,v.codUsuario.nome from Venda as v where v.codProduto.codTipo.tipo = :cat order by v.codProduto.codTipo.tipo asc";
+     private static String RETORNA_PRODUTO = "select new sisvendas.bean.admin.RelatReserva (v.codProduto.descricao,v.qtde,v.total,v.codUsuario.nome,v.codProduto.codTipo.tipo) from Venda as v where v.codProduto.codTipo.tipo = :cat order by v.codProduto.codTipo.tipo asc";
      private static String RETORNA_PRODUTO_DATA = "select v.codProduto.descricao,v.qtde,v.total,v.codUsuario.nome from Venda as v where v.codProduto.codTipo.tipo = :cat between :dia1 and :dia2 order by asc";
      private static String RETORNA_LIVRO_MAIS_VENDIDO;
      private static String RETORNA_LIVRO_MAIS_VENDIDO_DATA;
@@ -164,8 +165,8 @@ public class Relatorios extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        jLabel1.setText((String) jComboBox1.getSelectedItem());
-     //  showData(retornaProduto());
-       testaRet();
+      showData(retornaProduto());
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -216,19 +217,14 @@ public class Relatorios extends javax.swing.JFrame {
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
-private List<Venda> retornaProduto(){
+private List<RelatReserva> retornaProduto(){
     Query q = entityManager.createQuery(RETORNA_PRODUTO);
     q.setParameter("cat", jComboBox1.getSelectedItem());
  //   q.setParameter("dia", dataIn.getDate());
     return q.getResultList();
 }
 
-private void testaRet(){
-    for (Object o:retornaProduto()){
-        Venda v = (Venda)o;
-        System.out.println(v.getCodProduto().getDescricao());
-    }
-}
+
 private void showData(List res){
     Vector<String> header = new Vector<>();
      Vector dadosTabela = new Vector();
@@ -237,13 +233,13 @@ private void showData(List res){
     header.add("Total(R$)");
     header.add("Tarefeiro");
     for (Object o :res){
-        Venda v = (Venda)o;
+        RelatReserva v = (RelatReserva)o;
          Vector<Object> linha = new Vector<>();
          
-         linha.add(v.getCodProduto().getDescricao());
+         linha.add(v.getDesc());
          linha.add(v.getQtde());
          linha.add(v.getTotal());
-         linha.add(v.getCodUsuario().getNome());
+         linha.add(v.getNome());
          dadosTabela.add(linha);
     }
     tabela.setModel(new DefaultTableModel(dadosTabela, header));
