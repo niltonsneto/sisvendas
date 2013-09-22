@@ -4,6 +4,7 @@
  */
 package sisvendas.view.admin.menu;
 
+import java.awt.Toolkit;
 import java.util.List;
 import java.util.Vector;
 import javax.persistence.Query;
@@ -20,12 +21,13 @@ public class Relatorios extends javax.swing.JFrame {
     /**
      * Creates new form Relatorios  and v.data = :dia
      */
-     private static String RETORNA_PRODUTO = "select new sisvendas.bean.admin.RelatReserva (v.codProduto.descricao,v.qtde,v.total,v.codUsuario.nome,v.codProduto.codTipo.tipo) from Venda as v where v.codProduto.codTipo.tipo = :cat order by v.codProduto.codTipo.tipo asc";
+     private static String RETORNA_PRODUTO = "select new sisvendas.bean.admin.RelatReserva (v.codProduto.descricao,v.qtde,v.total,v.codUsuario.nome,v.codProduto.codTipo.tipo) from Venda as v where v.codProduto.codTipo.tipo = :cat and v.data = :dia order by v.codProduto.codTipo.tipo asc";
      private static String RETORNA_PRODUTO_DATA = "select v.codProduto.descricao,v.qtde,v.total,v.codUsuario.nome from Venda as v where v.codProduto.codTipo.tipo = :cat between :dia1 and :dia2 order by asc";
      private static String RETORNA_LIVRO_MAIS_VENDIDO;
      private static String RETORNA_LIVRO_MAIS_VENDIDO_DATA;
     public Relatorios() {
         initComponents();
+        setIcone();
     }
 
     /**
@@ -47,7 +49,6 @@ public class Relatorios extends javax.swing.JFrame {
         dataOut = new com.toedter.calendar.JDateChooser();
         jCheckBox1 = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,8 +122,6 @@ public class Relatorios extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel1.setText("teste");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,19 +132,13 @@ public class Relatorios extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(199, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(296, 296, 296))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(35, 35, 35)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(200, Short.MAX_VALUE))
         );
@@ -164,7 +157,7 @@ public class Relatorios extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1ItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       jLabel1.setText((String) jComboBox1.getSelectedItem());
+      
       showData(retornaProduto());
        
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -210,7 +203,6 @@ public class Relatorios extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabela;
@@ -220,7 +212,7 @@ public class Relatorios extends javax.swing.JFrame {
 private List<RelatReserva> retornaProduto(){
     Query q = entityManager.createQuery(RETORNA_PRODUTO);
     q.setParameter("cat", jComboBox1.getSelectedItem());
- //   q.setParameter("dia", dataIn.getDate());
+    q.setParameter("dia", dataIn.getDate());
     return q.getResultList();
 }
 
@@ -244,5 +236,7 @@ private void showData(List res){
     }
     tabela.setModel(new DefaultTableModel(dadosTabela, header));
 }
-
+private void setIcone() {
+       setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("finance.png")));
+    }
 }
