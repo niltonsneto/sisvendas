@@ -234,7 +234,7 @@ private void showData(List res){
      Vector dadosTabela = new Vector();
     header.add("Produto");
     header.add("Quantidade");
-    header.add("Total (R$)");
+    header.add("Total(R$)");
     header.add("Tarefeiro");
     for (Object o :res){
         Venda v = (Venda)o;
