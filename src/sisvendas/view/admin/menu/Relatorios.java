@@ -22,7 +22,7 @@ public class Relatorios extends javax.swing.JFrame {
      * Creates new form Relatorios  and v.data = :dia
      */
      private static String RETORNA_PRODUTO = "select new sisvendas.bean.admin.RelatReserva (v.codProduto.descricao,v.qtde,v.total,v.codUsuario.nome,v.codProduto.codTipo.tipo) from Venda as v where v.codProduto.codTipo.tipo = :cat and v.data = :dia order by v.codProduto.codTipo.tipo asc";
-     private static String RETORNA_PRODUTO_DATA = "select v.codProduto.descricao,v.qtde,v.total,v.codUsuario.nome from Venda as v where v.codProduto.codTipo.tipo = :cat between :dia1 and :dia2 order by asc";
+     private static String RETORNA_PRODUTO_DATA = "select new sisvendas.bean.admin.RelatReserva (v.codProduto.descricao,v.qtde,v.total,v.codUsuario.nome,v.codProduto.codTipo.tipo) from Venda as v where v.codProduto.codTipo.tipo = :cat between :dia1 and :dia2 order by asc";
      private static String RETORNA_LIVRO_MAIS_VENDIDO;
      private static String RETORNA_LIVRO_MAIS_VENDIDO_DATA;
     public Relatorios() {
@@ -157,7 +157,9 @@ public class Relatorios extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1ItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      
+      if(jCheckBox1.isSelected())
+            System.out.println("x");
+          else
       showData(retornaProduto());
        
     }//GEN-LAST:event_jButton1ActionPerformed
