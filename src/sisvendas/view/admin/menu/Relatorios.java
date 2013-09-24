@@ -158,7 +158,7 @@ public class Relatorios extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
       if(jCheckBox1.isSelected())
-            System.out.println("x");
+          showData(retornaProdutoData()); 
           else
       showData(retornaProduto());
        
@@ -218,7 +218,13 @@ private List<RelatReserva> retornaProduto(){
     return q.getResultList();
 }
 
-
+private List<RelatReserva> retornaProdutoData(){
+    Query q = entityManager.createQuery(RETORNA_PRODUTO_DATA);
+    q.setParameter("cat", jComboBox1.getSelectedItem());
+    q.setParameter("dia1", dataIn.getDate());
+    q.setParameter("dia2", dataIn.getDate());
+    return q.getResultList();
+}
 private void showData(List res){
     Vector<String> header = new Vector<>();
      Vector dadosTabela = new Vector();
